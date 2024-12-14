@@ -40,7 +40,6 @@ class MainActivity : ComponentActivity() {
     private var discoveryActive = false
     private val serviceType = "_http._tcp."
 
-    // Especificar tipos explícitos para evitar problemas de inferencia
     private val discoveryListener: NsdManager.DiscoveryListener = object : NsdManager.DiscoveryListener {
         override fun onDiscoveryStarted(regType: String?) {
             runOnUiThread {
@@ -100,7 +99,8 @@ class MainActivity : ComponentActivity() {
                 runOnUiThread {
                     if (ip != null) {
                         arduinoIpAddress = "http://$ip:$port"
-                        tvStatus.text = "Arduino en: $arduinoIpAddress"
+                        // En lugar de mostrar la IP, llamamos directamente a obtenerPorcentaje
+                        obtenerPorcentaje()
                     } else {
                         tvStatus.text = "No se encontró la IP del Arduino"
                     }
@@ -157,7 +157,6 @@ class MainActivity : ComponentActivity() {
                 val body = response.body?.string()
 
                 if (response.isSuccessful && body != null) {
-                    // Debido a que JSONObject a veces genera sobrecargas, especificamos el constructor
                     val json = JSONObject(body)
                     val porcentaje = json.optDouble("porcentajeLlenado", 0.0).toFloat()
 
