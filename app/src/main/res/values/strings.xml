@@ -1,3 +1,36 @@
 <resources>
-    <string name="app_name">ZafaconApp</string>
+    <string name="app_name">Zafacón Inteligente</string>
+
+    <!-- Texts for settings -->
+    <string name="consulta_unidad_title">Unidad de tiempo para consulta</string>
+    <string name="consulta_intervalo_title">Intervalo de tiempo para consulta</string>
+    <string name="notificacion_unidad_title">Unidad de tiempo para notificaciones</string>
+    <string name="notificacion_intervalo_title">Intervalo de tiempo para notificaciones</string>
+    <string name="nivel_notificacion_title">Nivel de llenado para notificaciones</string>
+
+    <!-- Button labels -->
+    <string name="btn_obtener_porcentaje">Obtener Porcentaje</string>
+    <string name="btn_config">Configuración</string>
+    <string name="save_changes">Guardar cambios</string>
+
+    <!-- Status messages -->
+    <string name="tv_status_default">Conexión: Desconectado</string>
+    <string name="tv_status_error">Error de conexión</string>
+
+    <!-- Notification strings -->
+    <string name="percentage_text">Porcentaje actual: %1$.2f%%</string>
+    <string name="connection_error">Error al conectarse al dispositivo</string>
+    <string name="channel_name">Canal de Notificaciones</string>
+    <string name="channel_description">Notificaciones sobre el nivel del zafacón</string>
+    <string name="notification_title">Notificación del Zafacón</string>
+    <string name="notification_text">El nivel ha alcanzado el %1$.2f%%.</string>
+    <string name="settings_title">Configuración</string>
+
+    <!-- Error messages -->
+    <string name="invalid_interval">Intervalo inválido. Por favor ingrese un valor entre 15 y 60 minutos o entre 1 y 24 horas.</string>
+    <string name="invalid_notification_level">Nivel de notificación inválido. Debe estar entre 10% y 100%.</string>
+
+    <!-- Confirmation messages -->
+    <string name="changes_saved">Cambios guardados exitosamente</string>
+    <string name="settings_saved_message">Configuraciones guardadas: Intervalo: %1$s %2$s, Nivel de notificación: %3$s%%</string>
 </resources>

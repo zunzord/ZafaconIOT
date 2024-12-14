@@ -1,0 +1,10 @@
+<resources>
+    <string-array name="time_units">
+        <item>Minutos</item>
+        <item>Horas</item>
+    </string-array>
+    <string-array name="time_unit_values">
+        <item>minutos</item>
+        <item>horas</item>
+    </string-array>
+</resources>

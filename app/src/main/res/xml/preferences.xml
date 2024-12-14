@@ -1,9 +1,57 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Configuración de IP del Arduino -->
     <EditTextPreference
         android:key="arduino_ip"
         android:title="IP del Arduino"
         android:dialogTitle="Ingrese la IP del Arduino"
         android:defaultValue="http://192.168.68.113"
-        android:summary="IP Actual: %s"
+        android:summary="Actual: %s"
         android:inputType="textUri" />
+
+    <!-- Configuración de intervalo y unidad para consulta -->
+    <EditTextPreference
+        android:key="consulta_intervalo"
+        android:title="Intervalo de tiempo para consulta"
+        android:dialogTitle="Ingrese el intervalo (mínimo 15 minutos)"
+        android:defaultValue="15"
+        android:summary="Actual: %s"
+        android:inputType="number" />
+
+    <ListPreference
+        android:key="consulta_unidad"
+        android:title="Unidad de tiempo para consulta"
+        android:dialogTitle="Seleccione la unidad de tiempo"
+        android:defaultValue="minutos"
+        android:entries="@array/time_units"
+        android:entryValues="@array/time_unit_values"
+        android:summary="Actual: %s" />
+
+    <!-- Configuración de intervalo y unidad para notificaciones -->
+    <EditTextPreference
+        android:key="notificacion_intervalo"
+        android:title="Intervalo de tiempo para notificaciones"
+        android:dialogTitle="Ingrese el intervalo (mínimo 1 hora)"
+        android:defaultValue="1"
+        android:summary="Actual: %s"
+        android:inputType="number" />
+
+    <ListPreference
+        android:key="notificacion_unidad"
+        android:title="Unidad de tiempo para notificaciones"
+        android:dialogTitle="Seleccione la unidad de tiempo"
+        android:defaultValue="horas"
+        android:entries="@array/time_units"
+        android:entryValues="@array/time_unit_values"
+        android:summary="Actual: %s" />
+
+    <!-- Configuración de nivel de llenado para notificaciones -->
+    <EditTextPreference
+        android:key="nivel_notificacion"
+        android:title="Nivel de llenado para notificaciones (%)"
+        android:dialogTitle="Ingrese el nivel de llenado para notificaciones"
+        android:defaultValue="80"
+        android:summary="Actual: %s"
+        android:inputType="numberDecimal" />
+
 </PreferenceScreen>
