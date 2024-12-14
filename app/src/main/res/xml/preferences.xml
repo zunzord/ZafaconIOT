@@ -1,0 +1,9 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference
+        android:key="arduino_ip"
+        android:title="IP del Arduino"
+        android:dialogTitle="Ingrese la IP del Arduino"
+        android:defaultValue="http://192.168.68.113"
+        android:summary="IP Actual: %s"
+        android:inputType="textUri" />
+</PreferenceScreen>
