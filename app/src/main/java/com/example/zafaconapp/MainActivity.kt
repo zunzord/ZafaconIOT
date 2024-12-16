@@ -16,12 +16,10 @@ import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import androidx.preference.PreferenceManager
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import org.json.JSONArray
 import org.json.JSONObject
 
 class MainActivity : ComponentActivity() {
@@ -30,12 +28,13 @@ class MainActivity : ComponentActivity() {
     private lateinit var imgPercentage: ImageView
     private lateinit var btnObtenerPorcentaje: Button
     private lateinit var btnConfig: Button
+    private lateinit var btnEstadisticas: Button
 
     private var arduinoIpAddress: String? = null
     private val client = OkHttpClient()
     private val channelId = "ZAFACON_NOTIFICATION_CHANNEL"
 
-    // Para mDNS con NsdManager
+    // mDNS
     private lateinit var nsdManager: NsdManager
     private var discoveryActive = false
     private val serviceType = "_http._tcp."
@@ -54,7 +53,6 @@ class MainActivity : ComponentActivity() {
         override fun onServiceFound(serviceInfo: NsdServiceInfo?) {
             serviceInfo?.let {
                 val name: String = it.serviceName
-                // Si el servicio encontrado contiene "arduino" en el nombre
                 if (name.contains("arduino", ignoreCase = true)) {
                     nsdManager.resolveService(it, resolveListener)
                 }
@@ -99,7 +97,6 @@ class MainActivity : ComponentActivity() {
                 runOnUiThread {
                     if (ip != null) {
                         arduinoIpAddress = "http://$ip:$port"
-                        // En lugar de mostrar la IP, llamamos directamente a obtenerPorcentaje
                         obtenerPorcentaje()
                     } else {
                         tvStatus.text = "No se encontró la IP del Arduino"
@@ -111,7 +108,10 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private var lastPercentage: Float = -1f
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.Theme_ZafaconApp)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -119,13 +119,13 @@ class MainActivity : ComponentActivity() {
         imgPercentage = findViewById(R.id.imgPercentage)
         btnObtenerPorcentaje = findViewById(R.id.btnObtenerPorcentaje)
         btnConfig = findViewById(R.id.btnConfig)
+        btnEstadisticas = findViewById(R.id.btnEstadisticas)
 
         checkNotificationPermission()
         createNotificationChannel()
 
         nsdManager = getSystemService(Context.NSD_SERVICE) as NsdManager
 
-        // Iniciar búsqueda del servicio Arduino
         discoverArduinoService()
 
         btnObtenerPorcentaje.setOnClickListener {
@@ -134,6 +134,11 @@ class MainActivity : ComponentActivity() {
 
         btnConfig.setOnClickListener {
             startActivity(Intent(this, SettingsActivity::class.java))
+        }
+
+        btnEstadisticas.setOnClickListener {
+            val intent = Intent(this, StatisticsActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -149,6 +154,7 @@ class MainActivity : ComponentActivity() {
             tvStatus.text = "Error: Arduino no detectado"
             return
         }
+
         val request = Request.Builder().url("$ip/getPercentage").get().build()
 
         Thread {
@@ -163,9 +169,8 @@ class MainActivity : ComponentActivity() {
                     runOnUiThread {
                         tvStatus.text = "Porcentaje: $porcentaje%"
                         updateImage(porcentaje)
-                        if (porcentaje >= 80) {
-                            mostrarNotificacion(porcentaje)
-                        }
+                        checkIfEmptied(porcentaje)
+                        lastPercentage = porcentaje
                     }
                 } else {
                     runOnUiThread {
@@ -179,6 +184,34 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }.start()
+    }
+
+    private fun checkIfEmptied(porcentaje: Float) {
+        // Leer el umbral
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        val umbral = prefs.getString("nivel_notificacion", "80")!!.toFloat()
+
+        // Si antes teníamos el zafacón lleno (por encima del umbral) y ahora está por debajo, consideramos que se vació
+        if (lastPercentage >= umbral && porcentaje < umbral) {
+            updateLastEventWithEmptiedTime(System.currentTimeMillis())
+        }
+    }
+
+    private fun updateLastEventWithEmptiedTime(emptiedAt: Long) {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        val eventsJson = prefs.getString("events_list", "[]")
+        val jsonArray = JSONArray(eventsJson)
+
+        // Buscar el último evento con emptiedAt = -1 y actualizarlo
+        for (i in jsonArray.length() - 1 downTo 0) {
+            val event = jsonArray.getJSONObject(i)
+            if (event.getLong("emptiedAt") == -1L) {
+                event.put("emptiedAt", emptiedAt)
+                break
+            }
+        }
+
+        prefs.edit().putString("events_list", jsonArray.toString()).apply()
     }
 
     private fun updateImage(porcentaje: Float) {
@@ -196,20 +229,6 @@ class MainActivity : ComponentActivity() {
             else -> R.drawable.level_100
         }
         imgPercentage.setImageResource(imageResource)
-    }
-
-    private fun mostrarNotificacion(porcentaje: Float) {
-        val notificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        val notification = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle("Zafacón lleno")
-            .setContentText("El zafacón está lleno al $porcentaje%.")
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .build()
-
-        notificationManager.notify(0, notification)
     }
 
     private fun createNotificationChannel() {

@@ -25,19 +25,22 @@
         android:textStyle="bold" />
 
     <!-- Botón para obtener el porcentaje manualmente -->
+    <!-- Botón Obtener Porcentaje -->
     <Button
         android:id="@+id/btnObtenerPorcentaje"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Obtener Porcentaje" />
+        style="@style/ButtonStyle"
+        android:text="OBTENER PORCENTAJE" />
 
-    <!-- Botón para configuración -->
+    <!-- Botón Configuración -->
     <Button
         android:id="@+id/btnConfig"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Configuración" />
+        style="@style/ButtonStyle"
+        android:text="CONFIGURACIÓN" />
+
+    <!-- Botón Ver Estadísticas -->
+    <Button
+        android:id="@+id/btnEstadisticas"
+        style="@style/ButtonStyle"
+        android:text="VER ESTADÍSTICAS" />
 
 </LinearLayout>

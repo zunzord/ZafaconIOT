@@ -5,10 +5,12 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import androidx.preference.PreferenceManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import org.json.JSONArray
 import org.json.JSONObject
 
 class ConsultaWorker(
@@ -20,7 +22,10 @@ class ConsultaWorker(
     private val channelId = "ZAFACON_NOTIFICATION_CHANNEL"
 
     override fun doWork(): Result {
-        val url = "http://arduino.local/getPercentage" // Usando resolución de nombre en lugar de IP
+        val prefs = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        val arduinoIP = prefs.getString("arduino_ip", "http://192.168.68.113") ?: "http://192.168.68.113"
+        val url = "$arduinoIP/getPercentage"
+
         val request = Request.Builder().url(url).get().build()
 
         return try {
@@ -33,6 +38,10 @@ class ConsultaWorker(
 
                 if (porcentaje >= getNotificationLevel()) {
                     sendNotification(porcentaje)
+
+                    // Registrar un nuevo evento: notifiedAt = ahora, emptiedAt = -1
+                    val currentTime = System.currentTimeMillis()
+                    addNewEvent(currentTime)
                 }
 
                 Result.success()
@@ -48,10 +57,7 @@ class ConsultaWorker(
     }
 
     private fun getNotificationLevel(): Float {
-        val prefs = applicationContext.getSharedPreferences(
-            "com.example.zafaconapp_preferences",
-            Context.MODE_PRIVATE
-        )
+        val prefs = PreferenceManager.getDefaultSharedPreferences(applicationContext)
         return prefs.getString("nivel_notificacion", "80")!!.toFloat()
     }
 
@@ -91,7 +97,20 @@ class ConsultaWorker(
     }
 
     private fun logError(message: String) {
-        // Esto es opcional para agregar registros en el Logcat
         println("ConsultaWorker Error: $message")
+    }
+
+    private fun addNewEvent(notifiedAt: Long) {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        val eventsJson = prefs.getString("events_list", "[]")
+        val jsonArray = JSONArray(eventsJson)
+
+        val newEvent = JSONObject()
+        newEvent.put("notifiedAt", notifiedAt)
+        newEvent.put("emptiedAt", -1)
+
+        jsonArray.put(newEvent)
+
+        prefs.edit().putString("events_list", jsonArray.toString()).apply()
     }
 }

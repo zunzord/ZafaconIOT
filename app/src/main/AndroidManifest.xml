@@ -2,12 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Permiso para acceso a Internet -->
+    <!-- Permisos necesarios -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
-    <!-- Permiso para notificaciones en Android 13+ -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
@@ -27,26 +26,25 @@
             android:name=".SettingsActivity"
             android:exported="true"
             android:label="@string/settings_title"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+            android:theme="@style/Theme.ZafaconApp" />
 
         <!-- Declaración de MainActivity -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.ZafaconApp">
+            android:theme="@style/Theme.ZafaconApp.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- Declaración del Worker (ConsultaWorker) -->
-        <service
-            android:name=".ConsultaWorker"
-            android:permission="android.permission.BIND_JOB_SERVICE"
-            android:exported="false"
-            tools:ignore="Instantiatable" />
+        <activity android:name=".StatisticsActivity" android:exported="true" />
+        <!--
+        Se elimina la declaración del Worker como servicio.
+        WorkManager se encarga internamente de gestionar el worker en segundo plano.
+        -->
 
     </application>
+
 </manifest>

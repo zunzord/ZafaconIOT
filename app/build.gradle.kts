@@ -52,10 +52,7 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
 
-    // Eliminamos dns-sd-kt: ya no es necesario
-    // implementation("com.appstractive:dns-sd-kt:1.0.4")  <-- Removido
-
-    // Usamos JmDNS para mDNS
+    // JmDNS for mDNS
     implementation("org.jmdns:jmdns:3.6.0")
 
     // WorkManager for background tasks
@@ -76,6 +73,17 @@ dependencies {
 
     // Preferences for settings screen
     implementation("androidx.preference:preference-ktx:1.2.1")
+
+    // WorkManager para AndroidX
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
+
+    // Additional dependencies for resolving issues
+    implementation("androidx.fragment:fragment-ktx:1.6.1") // Para fragmentos como PreferenceFragmentCompat
+    implementation("androidx.appcompat:appcompat:1.6.1")  // Para actividades compatibles
+    implementation("androidx.annotation:annotation:1.6.0") // Manejo de anotaciones en Android
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1") // Para ViewModel y ciclo de vida
+    implementation("androidx.core:core-ktx:1.12.0") // Compatibilidad con funciones de Android modernas
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
     // Testing dependencies
     testImplementation(libs.junit)

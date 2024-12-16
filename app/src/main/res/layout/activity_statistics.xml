@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f9f9f9"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+
+        <!-- Título de la sección -->
+        <TextView
+            android:id="@+id/tvTituloEstadisticas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Estadísticas de Vaciado"
+            android:textSize="20sp"
+            android:textColor="#333"
+            android:layout_marginBottom="24dp"
+            android:textStyle="bold"/>
+
+        <!-- Contenedor del gráfico -->
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/lineChart"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginBottom="24dp"
+            android:background="#ffffff"
+            android:padding="8dp"
+            android:elevation="4dp"/>
+
+        <!-- Sección de estadísticas -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#ffffff"
+            android:elevation="2dp"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="8dp">
+
+            <!-- Fecha de notificación más reciente -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingVertical="8dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_calendar" />
+
+                <TextView
+                    android:id="@+id/tvFechaNotificacionReciente"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fecha notificación más reciente: -"
+                    android:textColor="#333"
+                    android:layout_marginStart="8dp"/>
+            </LinearLayout>
+
+            <!-- Tiempo promedio para vaciar el zafacón -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingVertical="8dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_timer" />
+
+                <TextView
+                    android:id="@+id/tvTiempoPromedioVaciado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tiempo promedio post-notificación: -"
+                    android:textColor="#333"
+                    android:layout_marginStart="8dp"/>
+            </LinearLayout>
+
+            <!-- Eficiencia de mantenimiento del zafacón vacío -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingVertical="8dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_efficiency" />
+
+                <TextView
+                    android:id="@+id/tvEficiencia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Eficiencia: -"
+                    android:textColor="#333"
+                    android:layout_marginStart="8dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Botón de configuración (placeholder de estilo)
+             Aquí puedes aplicar las animaciones que desees en código -->
+        <FrameLayout
+            android:id="@+id/customButtonContainer"
+            android:layout_width="150dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="24dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:id="@+id/customButtonText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:paddingStart="33dp"
+                android:text="Config"
+                android:textColor="#323232"
+                android:textStyle="bold"
+                android:textSize="14sp"/>
+
+            <ImageView
+                android:id="@+id/customButtonIcon"
+                android:layout_width="39dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:background="#dedede"
+                android:padding="8dp"
+                android:src="@drawable/ic_settings"/>
+        </FrameLayout>
+    </LinearLayout>
+</ScrollView>

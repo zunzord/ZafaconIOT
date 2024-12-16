@@ -33,4 +33,13 @@
     <!-- Confirmation messages -->
     <string name="changes_saved">Cambios guardados exitosamente</string>
     <string name="settings_saved_message">Configuraciones guardadas: Intervalo: %1$s %2$s, Nivel de notificación: %3$s%%</string>
+    <string name="stats_last_notification">Fecha notificación más reciente: %1$s</string>
+
+    <!-- Strings para StatisticsActivity -->
+    <string name="stats_title">Estadísticas de Vaciado</string>
+    <string name="stats_last_notification_none">Fecha notificación más reciente: -</string>
+    <string name="stats_avg_time">Tiempo promedio post-notificación: %1$.2f min</string>
+    <string name="stats_avg_time_none">Tiempo promedio post-notificación: -</string>
+    <string name="stats_efficiency">Eficiencia: %1$d%%</string>
+    <string name="stats_efficiency_none">Eficiencia: -</string>
 </resources>
